@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   DESIGN TOKENS: Carol A. Anderson, MS, LMFT
+   Palette, type and motion tokens live here and are exposed as Tailwind
+   utilities (bg-ivory, text-evergreen, font-serif, ease-soft, shadow-soft...)
+   ========================================================================== */
+@theme {
+  --color-ivory: #fbf7f0;
+  --color-cream: #f3eadb;
+  --color-gold: #c9a24b; /* decorative accent: strokes, icons, large type */
+  --color-gold-ink: #7a5a12; /* AA-safe gold for small text on ivory/cream */
+  --color-honey: #e9b949;
+  --color-clay: #e8b9a5;
+  --color-sage: #b9c8b5;
+  --color-evergreen: #24403a;
+  --color-evergreen-deep: #1a302b;
+  --color-charcoal: #3a3532;
+
+  --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-soft: 0 24px 60px -28px rgba(36, 64, 58, 0.35);
+  --shadow-bloom: 0 34px 80px -26px rgba(201, 162, 75, 0.55);
+
+  --animate-breathe: breathe 5s ease-in-out infinite;
+  --animate-breathe-slow: breathe 6s ease-in-out infinite;
+  --animate-drift-a: drift-a 26s ease-in-out infinite;
+  --animate-drift-b: drift-b 30s ease-in-out infinite;
+  --animate-drift-c: drift-c 22s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-ripple: ripple 0.8s var(--ease-soft) forwards;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.025);
+    }
+  }
+  @keyframes drift-a {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(50px, 36px, 0) scale(1.1);
+    }
+  }
+  @keyframes drift-b {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1.05);
+    }
+    50% {
+      transform: translate3d(-60px, 28px, 0) scale(0.95);
+    }
+  }
+  @keyframes drift-c {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(30px, -44px, 0) scale(1.12);
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+    50% {
+      transform: translate3d(0, -8px, 0);
+    }
+  }
+  @keyframes ripple {
+    from {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0.55;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+  }
+}
+
+/* ==========================================================================
+   BASE
+   Body copy: 18px desktop / 17px mobile, 1.7 line-height (elder-friendly).
+   ========================================================================== */
+@layer base {
+  html {
+    font-size: 17px;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+    overflow-x: clip;
+  }
+  @media (min-width: 768px) {
+    html {
+      font-size: 18px;
+    }
+  }
+  body {
+    background: var(--color-ivory);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    line-height: 1.7;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    color: var(--color-evergreen);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  img,
+  svg,
+  iframe {
+    display: block;
+    max-width: 100%;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-evergreen);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-honey);
+  }
+  ::selection {
+    background: var(--color-honey);
+    color: var(--color-evergreen-deep);
+  }
+}
+
+/* ==========================================================================
+   COMPONENT HELPERS
+   ========================================================================== */
+
+/* Emotional emphasis words: italic serif + AA-safe gold */
+.accent {
+  font-style: italic;
+  color: var(--color-gold-ink);
+}
+.on-dark .accent {
+  color: var(--color-honey);
+}
+
+/* Arch-shaped image mask */
+.arch {
+  border-radius: 999px 999px 2rem 2rem;
+}
+
+/* Drifting background blobs (transform + opacity only, 20-30s loops) */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  will-change: transform;
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .blob {
+    filter: blur(72px);
+  }
+}
+
+/* Hand-drawn nav underline draws on hover/focus */
+.nav-underline path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.7s var(--ease-soft);
+}
+.group:hover .nav-underline path,
+.group:focus-visible .nav-underline path,
+.nav-underline.is-active path {
+  stroke-dashoffset: 0;
+}
+
+/* Form fields: large, calm, easy to tap */
+.field {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 1rem;
+  border: 1.5px solid rgba(36, 64, 58, 0.28);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.8rem 1rem;
+  color: var(--color-charcoal);
+  transition:
+    border-color 0.3s var(--ease-soft),
+    box-shadow 0.3s var(--ease-soft);
+}
+.field:hover {
+  border-color: rgba(36, 64, 58, 0.5);
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-evergreen);
+  box-shadow: 0 0 0 4px rgba(233, 185, 73, 0.4);
+}
+.field[aria-invalid="true"] {
+  border-color: #9b2c2c;
+}
+
+/* Custom cursor only on precise pointers */
+@media (hover: none), (pointer: coarse) {
+  .cursor-ring {
+    display: none !important;
+  }
+}
+
+/* Safe-area padding for the sticky mobile bar (iPhone notch/home bar) */
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* ==========================================================================
+   REDUCED MOTION: keep content, remove movement
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .blob {
+    animation: none !important;
+  }
+}
